@@ -1,0 +1,76 @@
+#! /usr/bin/php -q
+<?php
+
+/**
+ * @author Alexander Rein <a.rein@be-clever-ag.de>, beclever werbeagentur AG <support@be-clever-ag.de>
+ * @copyright (c) 2016, Alexander Rein
+ */
+if (php_sapi_name() != 'cli') {
+	die('Not called from a command line interface (e.g. a shell or scheduler).');
+}
+
+// Get path to this script
+$temp_PATH_thisScript = isset($_SERVER['argv'][0]) ? $_SERVER['argv'][0] : (isset($_ENV['_']) ? $_ENV['_'] : $_SERVER['_']);
+
+// Figure out if the path is relative
+$relativePath = FALSE;
+
+if ($temp_PATH_thisScript{0} != '/') {
+	$relativePath = TRUE;
+}
+
+// Resolve path
+if ($relativePath) {
+	$workingDirectory = isset($_SERVER['PWD']) ? $_SERVER['PWD'] : getcwd();
+	if ($workingDirectory) {
+		$temp_PATH_thisScript =
+				$workingDirectory . '/' . preg_replace('/\.\//', '', $temp_PATH_thisScript);
+		if (!@is_file($temp_PATH_thisScript)) {
+			die('Relative path found, but an error occurred while resolving the absolute path: ' . $temp_PATH_thisScript);
+		}
+	} else {
+		die('Relative path found, but resolving absolute path is not supported on this platform.');
+	}
+}
+
+// Define absolute path to this script
+define('PATH_root', dirname(dirname(dirname($temp_PATH_thisScript))));
+
+
+require_once(PATH_root.'/config/mainconf.php');
+$PATH_classes = PATH_root . "/classes";
+$GLOBALS["PATH_log"] = PATH_root."/admin/logs";
+
+//require_once($PATH_classes . '/class.Subscription.php');
+//$Subscription = new Subscription();
+//$subs = $Subscription->get_active_subscriptions();
+//$htpasswd_txt = "";
+//$count = 0;
+//$tempFile = $PATH_htpasswd.".tmp";
+//
+//if($subs === false) {
+//	echo "MySQL error occurred!";
+//	exit;
+//}
+//
+//foreach ($subs as $sub) {
+//	$count++;
+//	$htpasswd_txt .= "{$sub["username"]}:{$sub["password"]}\n";
+//}
+//
+//if (!$handle = fopen($tempFile, 'w')) {
+//	echo "Cannot open file ($tempFile)";
+//	exit;
+//}
+//if (fwrite($handle, $htpasswd_txt) === FALSE) {
+//	echo "Cannot write to file ($tempFile)";
+//	exit;
+//}
+//fclose($handle);
+//
+//if(!rename($tempFile, $PATH_htpasswd)){
+//	echo "Cannot rename file ($tempFile)";
+//	exit;
+//}
+//echo "Success, wrote {$count} users to file ($PATH_htpasswd)";
+?>
