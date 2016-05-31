@@ -6,7 +6,7 @@ require_once($PATH_classes . '/class.DBconn.php');
  * customisation settings
  *
  * @author Alexander Rein <a.rein@be-clever-ag.de>, beclever werbeagentur AG <support@be-clever-ag.de>
- * @copyright (c) 2016, SerNet Service Network GmbH
+ * @copyright (c) 2016, Alexander Rein
  */
 class Customize {
 

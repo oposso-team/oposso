@@ -3,6 +3,7 @@
 /**
  * @author Alexander Rein <a.rein@be-clever-ag.de>, beclever werbeagentur AG <support@be-clever-ag.de>
  * @copyright (c) 2016, Alexander Rein
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  */
 if(!isset($_SESSION)) 
 	session_start();
