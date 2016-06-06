@@ -37,7 +37,7 @@ if (!empty($_POST["action"])) {
 				if (move_uploaded_file($_FILES['logo']['tmp_name'], $uploadfile)) {
 					$settings['logo'] = $logo;
 				} else {
-					echo Helper::boxError("File could not be uploaded.");
+					echo Helper::boxError("File could not be uploaded: " . Customize::uploadMessage($_FILES['logo']['error']));
 					exit();
 				}
 			}
