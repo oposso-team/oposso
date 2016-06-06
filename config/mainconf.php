@@ -24,10 +24,10 @@ define("SESSION_lifetime", 3600); // Session lifetime set to 1h
 $CONF["email"]["From"] = "oposso@oposso.net";
 $CONF["email"]["From_name"] = "OPOSSO";
 $CONF["user"]["expire"] = 24; // Time (h) after the user will be deleted if not confirmed
-$CONF["notification"] = ["twoMonth" => "2 months", "twoWeeks" => "2 weeks"];
+$CONF["notification"] = ["twoMonth" => "2 months", "twoWeeks" => "2 weeks"]; // Notification settings
 $CONF["tc_required"] = TRUE; // terms and conditions have to be accepted
 
-$PATH_htpasswd = "/home/www/p223621/html/export/HTPASSWD"; // absolute filepath to .htpasswd which contains username and password
+$PATH_htpasswd = "HTPASSWD"; // absolute filepath to .htpasswd which contains username and password
 
 $PATH_uri = ""; // Subdirectory of the website root OPOSSO located in
 $PATH_home = $_SERVER["DOCUMENT_ROOT"] . $PATH_uri; // Path to website root
