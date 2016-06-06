@@ -56,7 +56,7 @@ class Customize {
 	/**
 	 * 
 	 * @param string $key
-	 * @return bool
+	 * @return array
 	 */
 	public function get_settings($key = NULL) {
 		$sql = "SELECT * FROM customisation";
