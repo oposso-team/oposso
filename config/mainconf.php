@@ -34,7 +34,7 @@ $PATH_home = $_SERVER["DOCUMENT_ROOT"] . $PATH_uri; // Path to website root
 $PATH_classes = $PATH_home . "/classes"; // Path to class directory
 $PATH_l10n = $PATH_home . "/l10n"; // Path to language files
 if (isset($_SERVER['HTTP_HOST'])) {
-	$URL_root = "http://" . $_SERVER['HTTP_HOST'] . $PATH_uri; // URL of the rootpage
+	$URL_root = "http://" . $_SERVER['HTTP_HOST']; // URL of the rootpage
 	$URL_home = $URL_root . "/index.php"; // URL of the homepage
 }
 

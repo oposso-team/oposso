@@ -42,36 +42,35 @@ require_once(PATH_root.'/config/mainconf.php');
 $PATH_classes = PATH_root . "/classes";
 $GLOBALS["PATH_log"] = PATH_root."/admin/logs";
 
-//require_once($PATH_classes . '/class.Subscription.php');
-//$Subscription = new Subscription();
-//$subs = $Subscription->get_active_subscriptions();
-//$htpasswd_txt = "";
-//$count = 0;
-//$tempFile = $PATH_htpasswd.".tmp";
-//
-//if($subs === false) {
-//	echo "MySQL error occurred!";
-//	exit;
-//}
-//
-//foreach ($subs as $sub) {
-//	$count++;
-//	$htpasswd_txt .= "{$sub["username"]}:{$sub["password"]}\n";
-//}
-//
-//if (!$handle = fopen($tempFile, 'w')) {
-//	echo "Cannot open file ($tempFile)";
-//	exit;
-//}
-//if (fwrite($handle, $htpasswd_txt) === FALSE) {
-//	echo "Cannot write to file ($tempFile)";
-//	exit;
-//}
-//fclose($handle);
-//
-//if(!rename($tempFile, $PATH_htpasswd)){
-//	echo "Cannot rename file ($tempFile)";
-//	exit;
-//}
-//echo "Success, wrote {$count} users to file ($PATH_htpasswd)";
-?>
+require_once($PATH_classes . '/class.Subscription.php');
+$Subscription = new Subscription();
+$subs = $Subscription->get_active_subscriptions();
+$htpasswd_txt = "";
+$count = 0;
+$tempFile = $PATH_htpasswd;
+
+if($subs === false) {
+	echo "MySQL error occurred!";
+	exit;
+}
+
+foreach ($subs as $sub) {
+	$count++;
+	$htpasswd_txt .= "{$sub["username"]}:{$sub["password"]}\n";
+}
+
+if (!$handle = fopen($tempFile, 'w')) {
+	echo "Cannot open file ($tempFile)";
+	exit;
+}
+if (fwrite($handle, $htpasswd_txt) === FALSE) {
+	echo "Cannot write to file ($tempFile)";
+	exit;
+}
+fclose($handle);
+
+if(!rename($tempFile, $PATH_htpasswd)){
+	echo "Cannot rename file ($tempFile)";
+	exit;
+}
+echo "Success, wrote {$count} users to file ($PATH_htpasswd)";

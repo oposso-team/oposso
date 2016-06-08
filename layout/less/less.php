@@ -22,13 +22,14 @@ $secondary_color = empty($values["secondary_color"]) ? "" : $values["secondary_c
 
 if (is_file($PATH_home . $logo)) {
 	$logo_dimension = getimagesize($PATH_home . $logo);
+} else {
+	$logo_dimension[0] = 0;
+	$logo_dimension[1] = 0;
 }
 
 $parser = new Less_Parser();
 $parser->parse("@colorPrimary: {$pimary_color}; @colorSecondary: {$secondary_color}; @logo: '{$logo}';");
-if (is_file($PATH_home . $logo)) {
-	$parser->parse("@logoWidth: {$logo_dimension[0]}px; @logoHeight: {$logo_dimension[1]}px;");
-}
+$parser->parse("@logoWidth: {$logo_dimension[0]}px; @logoHeight: {$logo_dimension[1]}px;");
 $parser->parseFile($PATH_home . '/layout/less/main.less', $PATH_home . '/layout/');
 
 header('Content-type: text/css');
