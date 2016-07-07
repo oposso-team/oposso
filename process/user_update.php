@@ -62,9 +62,9 @@ if (!empty($_POST["action"]) && $_POST["action"] == "send") { // Request confirm
 	}
 	if($user->set_notification($_SESSION["user"]["uID"], $_SESSION["user"]["password"], serialize($config))) {
 		$_SESSION["user"] = $user->user;
-		echo Helper::jsonResponse(TRUE, "success", Helper::setMarker(array("email"), array($email), $LOCAL["msg"]["success"]["notification_set"]));
+		echo Helper::jsonResponse(TRUE, "success",  $LOCAL["msg"]["success"]["notification_set"]);
 	} else {
-		echo Helper::jsonResponse(FALSE, "error", Helper::setMarker(array("email", "errormsg"), array($email, $user->error_msg), $LOCAL["msg"]["error"]["notification_set"]));
+		echo Helper::jsonResponse(FALSE, "error", Helper::setMarker(array("errormsg"), array($user->error_msg), $LOCAL["msg"]["error"]["notification_set"]));
 	}
 	
 }
