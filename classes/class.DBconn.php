@@ -23,11 +23,7 @@ class DBconn {
 		if (!empty($ca)) {
 			$this->db->ssl_set(NULL, NULL, $ca, NULL, NULL);
 		}
-		if (!$this->db->real_connect($db_host, $db_user, $bd_pass, $db_name, 3306, null, $flag)) {
-			$this->exception($this->db->connect_error);
-			exit();
-		}
-		if (!$this->db->set_charset("utf8")) {
+		if (!$this->db->real_connect($db_host, $db_user, $bd_pass, $db_name, 3306, null, $flag) || !$this->db->set_charset("utf8")) {
 			$this->exception($this->db->connect_error);
 			exit();
 		}

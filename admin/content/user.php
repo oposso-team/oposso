@@ -51,7 +51,7 @@ $allUsers = $User->get_all_users(1);
 		</tbody>
 	</table>
 	<div id="delete-user-dialog" class="confirmation">
-		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The user and all corresponding subsciptions (if any) will be flagged as deleted.<br/>Are you sure?</p>
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The user and all corresponding subsciptions (if any) will be deleted.<br/>Are you sure?</p>
 	</div>
 	<div id="setpass-user-dialog" class="confirmation">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The user password will be overwritten by a randomly generated password.<br/>Are you sure?</p>

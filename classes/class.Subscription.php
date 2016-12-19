@@ -2,6 +2,7 @@
 
 require_once($PATH_classes . "/vendor/autoload.php");
 require_once($PATH_classes . '/class.DBconn.php');
+require_once($PATH_classes . '/class.PasswordGenerator.php');
 
 /**
  * Subscription handler
@@ -95,8 +96,10 @@ class Subscription {
 	}
 
 	public function set_pass($sID, $pass) {
-		$sql = "UPDATE subscription SET password = MD5(?) WHERE uID = ?";
-		$this->db->addParams("s", $pass);
+		$password = crypt($pass, '$2y$10$' . PasswordGenerator::getAlphaNumericPassword(22));
+		
+		$sql = "UPDATE subscription SET password = ? WHERE uID = ?";
+		$this->db->addParams("s", $password);
 		$this->db->addParams("i", $this->uID);
 		if (!empty($sID) && $sID != -1) {
 			$this->db->addParams("i", $sID);

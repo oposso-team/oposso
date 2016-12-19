@@ -15,7 +15,7 @@ $typeList = $keyHandler->get_type();
 <div id="type">
 	<form method="post" action="process/type.php" class="ajax typeForm">
 		<input type="hidden" name="action" value="" />
-		<input placeholder="Short name" title="Short name of subscription type" size="10" class="text" type="text" maxlength="5" name="short" value="" />
+		<input placeholder="Short name" title="Short name of subscription type" size="15" class="text" type="text" maxlength="30" name="short" value="" />
 		<input placeholder="Path to download server" class="text" type="text" maxlength="255" name="path" value="" />
 		<input placeholder="Description" class="text" type="text" maxlength="255" name="description" value="" />
 		<button class="button_add" type="submit" value="add">Add</button>
@@ -29,7 +29,7 @@ $typeList = $keyHandler->get_type();
 					<form method="post" action="process/type.php" class="ajax typeForm tr">
 						<input type="hidden" name="tID" value="<?= $type["tID"] ?>" />
 						<input type="hidden" name="action" value="" />
-						<input disabled="disabled" title="Short name of subscription type" size="10" class="text" type="text" maxlength="5" name="short" value="<?= $type["short"] ?>" />&nbsp;
+						<input disabled="disabled" title="Short name of subscription type" size="15" class="text" type="text" maxlength="30" name="short" value="<?= $type["short"] ?>" />&nbsp;
 							<input placeholder="Path to download server" class="text" type="text" maxlength="255" name="path" value="<?= $type["path"] ?>" />&nbsp;
 							<input placeholder="Description" class="text" type="text" maxlength="255" name="description" value="<?= $type["description"] ?>" />&nbsp;
 							<button class="button_edit" type="submit" value="update">Update</button>&nbsp;
