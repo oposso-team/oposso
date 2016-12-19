@@ -81,7 +81,7 @@ foreach ($usersConfirmed as $userData) {
 				$allSubs = $Subs->get_subscription();
 				foreach ($allSubs as $currentSub) {
 					$expireDate = new DateTime($currentSub['exp_time']);
-					$notificationThreshold = $expireDate;
+					$notificationThreshold = new DateTime($currentSub['exp_time']);
 					$notificationThreshold->modify('-'.$notificationValue);
 					$notificationDate = new DateTime($currentSub['last_notification']);
 					if ($expireDate->getTimestamp() > $now->getTimestamp() && $notificationThreshold->getTimestamp() <= $now->getTimestamp() && (empty($currentSub['last_notification']) || $notificationThreshold->getTimestamp() > $notificationDate->getTimestamp())) {

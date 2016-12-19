@@ -29,11 +29,6 @@ $keySum = $keyHandler->get_key_summary();
 			<div id="slider-duration"></div>
 		</div>
 		<input placeholder="Platform" class="text" type="text" name="platform" value="" />
-		<select name="contract" class="select wide">
-			<option value="">++ Contract Type ++</option>
-			<option value="AGB1">AGB1</option>
-			<option value="EVBIT-UebA">EVBIT-UebA</option>
-		</select>
 		<hr class="vert"/>
 		<select name="number" class="select small">
 			<option value="0">++ Number ++</option>
@@ -55,7 +50,6 @@ $keySum = $keyHandler->get_key_summary();
 				<tr class="ui-widget-header">
 					<th>Type</th>
 					<th>Platform</th>
-					<th>Contract</th>
 					<th>Total</th>
 					<th>Used</th>
 					<th>
@@ -74,7 +68,6 @@ $keySum = $keyHandler->get_key_summary();
 					<tr>
 						<td><?= $type["short"] ?><?= $keyS["duration"] ?></td>
 						<td><?= $keyS["platform"] ?></td>
-						<td><?= $keyS["contract"] ?></td>
 						<td><?= $keyS["total"] ?></td>
 						<td><?= $keyS["used"] ?></td>
 						<td>
