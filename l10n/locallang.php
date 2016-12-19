@@ -2,7 +2,7 @@
 
 require_once($PATH_classes . '/class.User.php');
 
-if (isset($_REQUEST['ln']) && !empty($_REQUEST['ln']) && is_file(__DIR__ . '/' . strtoupper($_REQUEST['ln']) . ".php")) {
+if (isset($_REQUEST['ln']) && !empty($_REQUEST['ln'] && is_file(__DIR__ . '/' . strtoupper($_REQUEST['ln']) . ".php"))) {
 	$preferredLang = strtoupper($_REQUEST['ln']);
 	setcookie("ln", $preferredLang, strtotime('+365 days'));
 	$_COOKIE['ln'] = $preferredLang;
@@ -12,7 +12,7 @@ if (isset($_REQUEST['ln']) && !empty($_REQUEST['ln']) && is_file(__DIR__ . '/' .
 } else if (!empty($_SESSION['user']['lang'])) {
 	$preferredLang = $_SESSION['user']['lang'];
 	$_COOKIE['ln'] = $preferredLang;
-} else if (isset($_COOKIE['ln']) && !empty($_COOKIE['ln']) && is_file(__DIR__ . '/' . strtoupper($_COOKIE['ln']) . ".php")) {
+} else if (isset($_COOKIE['ln']) && !empty($_COOKIE['ln'] && is_file(__DIR__ . '/' . strtoupper($_COOKIE['ln']) . ".php"))) {
 	$preferredLang = $_COOKIE['ln'];
 } else {
 	$preferredLang = getPreferredLanguage();

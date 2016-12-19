@@ -51,7 +51,7 @@ class KeyHandler {
 	}
 
 	public function add_type($short, $path = '', $description = '') {
-		if (!empty($short) && strlen($short) <= 30) {
+		if (!empty($short) && strlen($short) <= 5) {
 			$this->db->setParams("sss", array(&$short, &$path, &$description));
 			$sql = "INSERT INTO subscription_type (short, path, description) VALUES (?, ?, ?)";
 			if ($this->db->query($sql) === FALSE) {
