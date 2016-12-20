@@ -25,7 +25,7 @@ $smarty->assign("msg_success", $msg_success);
 $smarty->assign("LOCAL", $LOCAL);
 $smarty->assign("product_name", $productname);
 if (!empty($_SESSION))
-	$smarty->assign("product_name", $_SESSION);
+	$smarty->assign("SESSION", $_SESSION);
 if (!empty($_COOKIE))
 	$smarty->assign("COOKIE", $_COOKIE);
 $smarty->display('layout/template/account.tpl');

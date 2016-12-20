@@ -46,7 +46,7 @@ class User {
 	}
 
 	public function add_user($firstname, $lastname, $organization, $email, $password, $lang = "EN") {
-		$password = crypt($password, '$2a$10$' . PasswordGenerator::getAlphaNumericPassword(22));
+		$password = crypt($password, '$2y$10$' . PasswordGenerator::getAlphaNumericPassword(22));
 		$hash = PasswordGenerator::getAlphaNumericPassword(50);
 
 		$this->db->setParams("sssssss", array(&$firstname, &$lastname, &$organization, &$email, &$password, &$lang, &$hash));
@@ -63,7 +63,7 @@ class User {
 	public function update_user($uID, $currentPassword, $email, $firstname = "", $lastname = "", $organization = "", $password = "") {
 		$update = "";
 		if (!empty($password)) {
-			$password = crypt($password, '$2a$10$' . PasswordGenerator::getAlphaNumericPassword(22));
+			$password = crypt($password, '$2y$10$' . PasswordGenerator::getAlphaNumericPassword(22));
 			$this->db->addParams("s", $password);
 			$update .= "password = ?, ";
 		}
@@ -122,16 +122,12 @@ class User {
 	}
 
 	public function delete_user($uID, $currentPassword) {
-		$this->db->addParams("i", $uID);
-		$this->db->addParams("s", $currentPassword);
-		$sql = "UPDATE user SET active = 0 WHERE uID = ? AND password = ?";
-		if ($this->db->query($sql) === FALSE) {
-			$this->exception($this->db->error);
+		if ($this->cron_delete($uID, $currentPassword)) {
+			$this->log("User #{$uID} deleted");
+			return TRUE;
+		} else {
 			return FALSE;
 		}
-		$this->log("User #{$uID} set as deleted");
-		$this->user = array();
-		return TRUE;
 	}
 
 	public function cron_delete($uID, $currentPassword) {
