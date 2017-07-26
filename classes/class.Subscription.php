@@ -279,7 +279,7 @@ class Subscription {
 				}
 			} elseif (!empty($ext_sub)) {
 				$ext_db->addParams("i", $ext_sub['ID']);
-				$sql = "DELETE FROM user_auth WHERE user_ID = ?";
+				$sql = "DELETE FROM user_auth WHERE ID = ?";
 				if ($ext_db->query($sql) === FALSE) {
 					$this->exception($ext_db->error);
 					return FALSE;

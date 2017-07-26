@@ -28,55 +28,57 @@ $crDate;
 $expDate;
 $pass;
 
-switch ($_POST["action"]) {
+if (isset($_POST["action"])) {
+	switch ($_POST["action"]) {
 
-	case "edit":
-		$expire = isset($_POST["expire"]) ? (string) $_POST["expire"] : "";
-		if (empty($expire)) {
-			echo Helper::boxError("Invalid expire date given.");
-		}
-		if (date("Y/m/d", strtotime($sub["exp_time"])) != date("Y/m/d", strtotime($expire))) {
-			if ($subscription->set_expire($sID, $expire)) {
-				echo Helper::boxHighlight("Subscription #{$sID} successfully updated.");
+		case "edit":
+			$expire = isset($_POST["expire"]) ? (string) $_POST["expire"] : "";
+			if (empty($expire)) {
+				echo Helper::boxError("Invalid expire date given.");
+			}
+			if (date("Y/m/d", strtotime($sub["exp_time"])) != date("Y/m/d", strtotime($expire))) {
+				if ($subscription->set_expire($sID, $expire)) {
+					echo Helper::boxHighlight("Subscription #{$sID} successfully updated.");
+				} else {
+					echo Helper::boxError("<b>Subscription #{$sID} could not be updated:</b><br/>" . $subscription->error_msg);
+				}
+			}
+
+			$active = isset($_POST["active"]) ? (int) $_POST["active"] : 0;
+			if ($active != $sub["active"]) {
+				if ($subscription->toggle_subscription($sID)) {
+					echo Helper::boxHighlight("Subscription #{$sID} successfully updated.");
+				} else {
+					echo Helper::boxError("<b>Subscription #{$sID} could not be updated:</b><br/>" . $subscription->error_msg);
+				}
+			}
+			break;
+
+		case "delete":
+			if ($subscription->delete_subscription($sID)) {
+				$keyHandler = new KeyHandler();
+				$deletedKeys = $keyHandler->search_key_data("", "", "", $sID);
+				$error = FALSE;
+				foreach ($deletedKeys as $key) {
+					if (!$keyHandler->set_status($key["kID"], KeyHandler::STATUS_DELETED))
+						$error = TRUE;
+				}
+				if ($error) {
+					echo Helper::boxError("<b>One or more effected keys could not be deleted:</b><br/>" . $keyHandler->error_msg);
+				} else {
+					echo Helper::boxHighlight("Subscription #{$sID} successfully deleted.");
+				}
 			} else {
-				echo Helper::boxError("<b>Subscription #{$sID} could not be updated:</b><br/>" . $subscription->error_msg);
+				echo Helper::boxError("<b>Subscription #{$sID} could not be deleted:</b><br/>" . $subscription->error_msg);
 			}
-		}
-
-		$active = isset($_POST["active"]) ? (int) $_POST["active"] : 0;
-		if ($active != $sub["active"]) {
-			if ($subscription->toggle_subscription($sID)) {
-				echo Helper::boxHighlight("Subscription #{$sID} successfully updated.");
-			} else {
-				echo Helper::boxError("<b>Subscription #{$sID} could not be updated:</b><br/>" . $subscription->error_msg);
-			}
-		}
-		break;
-
-	case "delete":
-		if ($subscription->delete_subscription($sID)) {
-			$keyHandler = new KeyHandler();
-			$deletedKeys = $keyHandler->search_key_data("", "", "", $sID);
-			$error = FALSE;
-			foreach ($deletedKeys as $key) {
-				if (!$keyHandler->set_status($key["kID"], KeyHandler::STATUS_DELETED))
-					$error = TRUE;
-			}
-			if ($error) {
-				echo Helper::boxError("<b>One or more effected keys could not be deleted:</b><br/>" . $keyHandler->error_msg);
-			} else {
-				echo Helper::boxHighlight("Subscription #{$sID} successfully deleted.");
-			}
-		} else {
-			echo Helper::boxError("<b>Subscription #{$sID} could not be deleted:</b><br/>" . $subscription->error_msg);
-		}
-		break;
+			break;
 
 
-		break;
+			break;
 
-	default:
-		break;
+		default:
+			break;
+	}
 }
 
 $sub = $subscription->get_subscription($sID);
