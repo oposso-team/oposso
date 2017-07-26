@@ -7,7 +7,7 @@
  */
 require_once('./../../config/mainconf.php');
 require_once($PATH_classes . "/class.Customize.php");
-require_once($PATH_classes . "/less/Less.php");
+require_once($PATH_classes . "/vendor/autoload.php");
 
 
 $Customize = new Customize();

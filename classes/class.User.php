@@ -3,7 +3,6 @@
 require_once($PATH_classes . "/vendor/autoload.php");
 require_once($PATH_classes . '/class.DBconn.php');
 require_once($PATH_classes . '/class.PasswordGenerator.php');
-require_once($PATH_classes . '/PHPMailer/PHPMailerAutoload.php');
 
 /**
  * User Management

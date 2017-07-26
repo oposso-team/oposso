@@ -7,8 +7,8 @@
 require_once('./config/mainconf.php');
 require_once("./process/script_access.php");
 require_once('./process/user_auth_confirmed.php');
+require_once($PATH_classes . "/vendor/autoload.php");
 require_once($PATH_classes . '/class.Subscription.php');
-require_once($PATH_classes . "/Smarty/libs/Smarty.class.php");
 require_once($PATH_classes . "/class.Customize.php");
 require_once($PATH_l10n . "/locallang.php");
 
