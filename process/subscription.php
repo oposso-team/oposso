@@ -59,12 +59,16 @@ switch ($_POST["action"]) {
 		break;
 
 	case "setpass":
+		$passExpression = "/^[".$CONF["pass_filter"]."]+$/";
 		if (empty($_POST["target"]) || !is_numeric($_POST["target"])) {
 			echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["no_subscription_id"]);
 			exit();
 		}
 		if (empty($_POST["password"])) {
 			echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["empty_password"]);
+			exit();
+		} elseif (!preg_match($passExpression, $_POST["password"])) {
+			echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["invalid_password"]);
 			exit();
 		} elseif (empty($_POST["password_confirm"]) || $_POST["password_confirm"] != $_POST["password"]) {
 			echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["invalid_password_confirm"]);

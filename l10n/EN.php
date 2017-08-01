@@ -309,6 +309,7 @@ $LOCAL["msg"]["error"]["empty_lastname"] = "Enter Last name";
 $LOCAL["msg"]["error"]["empty_password"] = "Enter Password";
 $LOCAL["msg"]["error"]["email_auth"] = "Corresponding User not found.";
 $LOCAL["msg"]["error"]["invalid_password_confirm"] = "Enter Password (confirm) same as Password";
+$LOCAL["msg"]["error"]["invalid_password"] = "Allowed characters: A-Z, a-z, 0-9, -._~";
 $LOCAL["msg"]["error"]["empty_subscription_list"] = "Please select some subscriptions first";
 $LOCAL["msg"]["error"]["empty_termsconditions"] = "Please confirm the terms and conditions";
 $LOCAL["msg"]["error"]["user_register"] = "<b>User '###EMAIL###' could not be created:</b><br/>###ERRORMSG###";
