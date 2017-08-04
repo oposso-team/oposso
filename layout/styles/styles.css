@@ -32,6 +32,14 @@ nav #navigation li.disabled a {opacity: 0.5; cursor: default}
 .separate-left {margin-left: -1px; border-left: 1px solid #dfdfdf}
 .separate-right {margin-right: -1px; border-right: 1px solid #dfdfdf}
 
+.pagination {list-style-type: none; text-align: center; padding: 3px 5px 7px; margin: 0; background-color: #E0E0E0; border: 2px solid #EEE}
+.pagination li {display: inline;}
+.pagination li a {display: inline-block; padding: 2px 10px; margin: 0 2px; border: 1px solid; border-radius: 3px; background-color: #FFF}
+.pagination li span {display: inline-block; padding: 6px 4px 0;}
+.pagination li.disabled a {border-color: #bbb; color: #bbb; background-color: transparent; cursor: default;}
+.pagination li.disabled a:hover {text-decoration: none;}
+.pagination:after {content: ""; display: block; clear: both;}
+
 input.text {display: inline-block; vertical-align: middle; padding: 0.4em 0.8em;}
 .dialog fieldset {padding:0; border:0; margin-top:25px;}
 .dialog input, .dialog label {display: block;}

@@ -137,12 +137,13 @@ $(function () {
 		event.preventDefault();
 		var data = {};
 		var href = $(this).is('a') ? $(this).attr("href") : $(this).attr("data-href");
+		var callback = window[$(this).attr("data-callback")];
 		data["source"] = $($(this).attr("data-source")).serialize();
 		data["action"] = $(this).attr("data-action");
 		if (typeof $(this).attr("title") !== "undefined") {
 			$($(this).attr("data-target")).dialog("option", "title", $(this).attr("title"));
 		}
-		initEditDialog($(this).attr("data-target"), href, data);
+		initEditDialog($(this).attr("data-target"), href, data, "html", callback);
 	});
 
 	$("#accordion").accordion({
@@ -158,6 +159,14 @@ $(function () {
 	$(".tabs").tabs();
 	init_button();
 });
+
+function subInfo(){
+	$(".dialog#extendsubs").each(function () {
+		$(".ui-dialog-buttonpane .dialog-sub-info", $(this).parent()).remove();
+		var count = $("select#source option",this).length;
+		$(".ui-dialog-buttonpane", $(this).parent()).prepend("<div class='dialog-sub-info'>" + count + " " + LOCAL["subscription"]["dialog"]["extend"]["selected_info"] + "</div>");
+	});
+}
 
 function message(msg, append) {
 	console.log(msg);
@@ -177,7 +186,7 @@ function message(msg, append) {
 }
 
 // Handle dynamic forms loaded via ajax
-function initEditDialog(target, requestURL, data, type) {
+function initEditDialog(target, requestURL, data, type, callback) {
 	type = (typeof type === "undefined") ? "html" : type;
 	var form = $(target);
 	$.ajax({
@@ -226,6 +235,9 @@ function initEditDialog(target, requestURL, data, type) {
 					}
 				}
 
+			}
+			if (typeof callback === "function") {
+				callback();
 			}
 		}
 	});

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Alexander Rein <a.rein@be-clever-ag.de>, beclever werbeagentur AG <support@be-clever-ag.de>
  * @copyright (c) 2016, Alexander Rein
@@ -10,13 +11,16 @@ require_once('./process/user_auth_confirmed.php');
 require_once($PATH_classes . "/vendor/autoload.php");
 require_once($PATH_classes . '/class.Subscription.php');
 require_once($PATH_classes . "/class.Customize.php");
+require_once($PATH_classes . '/class.Pagination.php');
 require_once($PATH_l10n . "/locallang.php");
 
 $subscription = new Subscription($_SESSION["user"]["uID"]);
-$allSub = $subscription->get_subscription();
+$limit = !empty($_GET['limit']) ? $_GET['limit'] : 500;
+$page = !empty($_GET['page']) ? $_GET['page'] : 1;
+$allSub = $subscription->get_subscription("");
 
 $smarty = new Smarty;
-		
+
 if ($allSub === FALSE)
 	$_SESSION['ERROR'] = $subscription->error_msg;
 else {
@@ -29,10 +33,18 @@ else {
 			$expSub[] = $sub;
 		}
 	}
-}
 
-$smarty->assign("currSub", $currSub);
-$smarty->assign("expSub", $expSub);
+	$currPaginator = new Pagination($currSub);
+	$currSubPart = $currPaginator->getPart($limit, $page);
+	
+	$expPaginator = new Pagination($expSub);
+	$expSubPart = $expPaginator->getPart($limit, $page);
+	
+	$smarty->assign("currPagination", $currPaginator->createLinks());
+	$smarty->assign("currSub", $currSubPart->part);
+	$smarty->assign("expPagination", $expPaginator->createLinks());
+	$smarty->assign("expSub", $expSubPart->part);
+}
 
 $msg_error = isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : "";
 $msg_success = isset($_SESSION['SUCCESS']) ? $_SESSION['SUCCESS'] : "";

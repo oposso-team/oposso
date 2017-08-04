@@ -269,6 +269,7 @@ $LOCAL["subscription"]["dialog"]["extend"]["title"] = "Extend subscription durat
 $LOCAL["subscription"]["dialog"]["extend"]["label_selected"] = "Selected subscriptions";
 $LOCAL["subscription"]["dialog"]["extend"]["label_keys"] = "Insert the same number of keys (one per line) as selected";
 $LOCAL["subscription"]["dialog"]["extend"]["label_termsconditions"] = "I accept the terms and conditions for <a href='https://samba.plus/tcsambaplus.pdf' target='_blank'>SAMBA+ <span class='ui-icon ui-icon-extlink'></span></a><br/>(German: Ich akzeptiere die AGB f&uuml;r <a href='https://samba.plus/agbsambaplus.pdf' target='_blank'>SAMBA+ <span class='ui-icon ui-icon-extlink'></span></a>)";
+$LOCAL["subscription"]["dialog"]["extend"]["selected_info"] = "subscriptions selected.";
 $LOCAL["subscription"]["dialog"]["extend"]["submit"] = "Extend subscriptions";
 $LOCAL["subscription"]["dialog"]["setpass"]["title"] = "Set password for subscription";
 $LOCAL["subscription"]["dialog"]["setpass"]["label_pass"] = "Password";
