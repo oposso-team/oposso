@@ -46,7 +46,7 @@ class Pagination {
 		return $result;
 	}
 
-	public function createLinks($links = 7, $list_class = "pagination") {
+	public function createLinks($links = 5, $list_class = "pagination") {
 		if ($this->_limit == 'all' || $this->_total <= $this->_limit) {
 			return '';
 		}

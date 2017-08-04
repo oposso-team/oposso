@@ -1,4 +1,4 @@
-#! /usr/bin/env php
+#! /usr/bin/php -q
 <?php
 /**
  * @author Alexander Rein <a.rein@be-clever-ag.de>, beclever werbeagentur AG <support@be-clever-ag.de>

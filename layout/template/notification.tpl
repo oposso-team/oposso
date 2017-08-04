@@ -1,7 +1,7 @@
 {extends file="layout/template/template.tpl"}
 
 {block name=content}
-	<div class="grid50">
+	<div class="grid66">
 		<form method="post" action="process/user_update.php" class="ajax">
 			<input type="hidden" name="action" value="notification" />
 			<table class="ui-widget ui-widget-content table-form">
