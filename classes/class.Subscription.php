@@ -83,7 +83,7 @@ class Subscription {
 			$this->db->addParams("i", $sID);
 			$where[] = "s.sID = ?";
 		}
-		$where[] = "s.status = " . self::STATUS_NONE;
+		$where[] = "s.status <> " . self::STATUS_DELETED;
 		$sql = $sql . " WHERE " . implode(" AND ", $where) . " GROUP BY s.sID";
 		if ($this->db->query($sql) === FALSE) {
 			$this->exception($this->db->error);
@@ -136,7 +136,7 @@ class Subscription {
 	}
 
 	public function get_all_subscription_user_info($active = TRUE) {
-		$sql = "SELECT s.*, u.firstname, u.lastname, u.organization FROM subscription s JOIN user u ON s.uID = u.uID WHERE s.status = " . self::STATUS_NONE;
+		$sql = "SELECT s.*, u.firstname, u.lastname, u.organization FROM subscription s JOIN user u ON s.uID = u.uID WHERE s.status <> " . self::STATUS_DELETED;
 		if ($active) {
 			$sql .= " AND u.confirmed = 1";
 		}
@@ -149,7 +149,7 @@ class Subscription {
 	}
 
 	public function get_active_subscriptions($sID = "") {
-		$sql = "SELECT sID, uID, username, password, exp_time FROM subscription WHERE active = 1 AND exp_time > NOW() AND status = " . self::STATUS_NONE;
+		$sql = "SELECT sID, uID, username, password, exp_time FROM subscription WHERE active = 1 AND exp_time > NOW() AND status <> " . self::STATUS_DELETED;
 		if (!empty($sID)) {
 			$this->db->addParams("i", $sID);
 			$sql .= " AND sID = ?";
@@ -207,6 +207,18 @@ class Subscription {
 		}
 	}
 
+	public function set_status($sID, $status) {
+		$this->db->addParams("i", $status);
+		$this->db->addParams("i", $sID);
+		$sql = "UPDATE subscription SET status = ? WHERE sID = ?";
+		if ($this->db->query($sql) === FALSE) {
+			$this->exception($this->db->error);
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
+
 	public function add_expire($sID, $duration) {
 		$this->db->addParams("i", $duration);
 		$this->db->addParams("i", $this->uID);
@@ -236,15 +248,12 @@ class Subscription {
 	}
 
 	public function delete_subscription($sID) {
-		$this->db->addParams("i", $sID);
-		$sql = "UPDATE subscription SET status = " . self::STATUS_DELETED . " WHERE sID = ?";
-		if ($this->db->query($sql) === FALSE) {
-			$this->exception($this->db->error);
-			return FALSE;
-		} else {
+		if ($this->set_status($sID, self::STATUS_DELETED)) {
 			$this->sync_external_user_table($sID);
 			$this->log("Update subscription #{$sID} (Set as deleted)");
 			return TRUE;
+		} else {
+			return FALSE;
 		}
 	}
 
