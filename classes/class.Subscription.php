@@ -65,6 +65,7 @@ class Subscription {
 			} else {
 				$key = empty($kID) ? $user : "#{$kID}";
 				$return = $this->db->fetch_array_assoc();
+				$this->sync_external_user_table($return["sID"]);
 				$this->log("User #{$this->uID} create subscription #{$return["sID"]} (Key: '{$key}')");
 				return $return;
 			}
@@ -82,7 +83,7 @@ class Subscription {
 			$this->db->addParams("i", $sID);
 			$where[] = "s.sID = ?";
 		}
-		$where[] = "s.status = " . self::STATUS_NONE;
+		$where[] = "s.status <> " . self::STATUS_DELETED;
 		$sql = $sql . " WHERE " . implode(" AND ", $where) . " GROUP BY s.sID";
 		if ($this->db->query($sql) === FALSE) {
 			$this->exception($this->db->error);
@@ -97,7 +98,6 @@ class Subscription {
 
 	public function set_pass($sID, $pass) {
 		$password = crypt($pass, '$2y$10$' . PasswordGenerator::getAlphaNumericPassword(22));
-		
 		$sql = "UPDATE subscription SET password = ? WHERE uID = ?";
 		$this->db->addParams("s", $password);
 		$this->db->addParams("i", $this->uID);
@@ -112,9 +112,7 @@ class Subscription {
 			return FALSE;
 		} else {
 			if ($sID == "all") {
-				foreach ($this->get_sID() as $sub) {
-					$this->sync_external_user_table($sub["sID"]);
-				}
+				$this->sync_external_passwords($password);
 			} else {
 				$this->sync_external_user_table($sID);
 			}
@@ -138,7 +136,7 @@ class Subscription {
 	}
 
 	public function get_all_subscription_user_info($active = TRUE) {
-		$sql = "SELECT s.*, u.firstname, u.lastname, u.organization FROM subscription s JOIN user u ON s.uID = u.uID WHERE s.status = " . self::STATUS_NONE;
+		$sql = "SELECT s.*, u.firstname, u.lastname, u.organization FROM subscription s JOIN user u ON s.uID = u.uID WHERE s.status <> " . self::STATUS_DELETED;
 		if ($active) {
 			$sql .= " AND u.confirmed = 1";
 		}
@@ -151,7 +149,7 @@ class Subscription {
 	}
 
 	public function get_active_subscriptions($sID = "") {
-		$sql = "SELECT sID, uID, username, password, exp_time FROM subscription WHERE active = 1 AND exp_time > NOW() AND password IS NOT NULL AND status = " . self::STATUS_NONE;
+		$sql = "SELECT sID, uID, username, password, exp_time FROM subscription WHERE active = 1 AND exp_time > NOW() AND status <> " . self::STATUS_DELETED;
 		if (!empty($sID)) {
 			$this->db->addParams("i", $sID);
 			$sql .= " AND sID = ?";
@@ -209,6 +207,18 @@ class Subscription {
 		}
 	}
 
+	public function set_status($sID, $status) {
+		$this->db->addParams("i", $status);
+		$this->db->addParams("i", $sID);
+		$sql = "UPDATE subscription SET status = ? WHERE sID = ?";
+		if ($this->db->query($sql) === FALSE) {
+			$this->exception($this->db->error);
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
+
 	public function add_expire($sID, $duration) {
 		$this->db->addParams("i", $duration);
 		$this->db->addParams("i", $this->uID);
@@ -238,15 +248,12 @@ class Subscription {
 	}
 
 	public function delete_subscription($sID) {
-		$this->db->addParams("i", $sID);
-		$sql = "UPDATE subscription SET status = " . self::STATUS_DELETED . " WHERE sID = ?";
-		if ($this->db->query($sql) === FALSE) {
-			$this->exception($this->db->error);
-			return FALSE;
-		} else {
+		if ($this->set_status($sID, self::STATUS_DELETED)) {
 			$this->sync_external_user_table($sID);
 			$this->log("Update subscription #{$sID} (Set as deleted)");
 			return TRUE;
+		} else {
+			return FALSE;
 		}
 	}
 
@@ -318,6 +325,21 @@ class Subscription {
 			foreach ($subs as $sub) {
 				$this->sync_external_user_table($sub["sID"]);
 			}
+	}
+
+	private function sync_external_passwords($pass) {
+		if (sync_external_db) {
+			$ext_db = new DBconn(ext_DB_host, ext_DB_user, ext_DB_pass, ext_DB_name, ext_DB_flag, ext_DB_ca);
+			$ext_db->addParams("s", $pass);
+			$ext_db->addParams("i", $this->uID);
+			$sql = "UPDATE user_auth SET password = ? WHERE user_ID = ?";
+			if ($ext_db->query($sql) === FALSE) {
+				$this->exception($ext_db->error);
+				return FALSE;
+			}
+		} else {
+			return TRUE;
+		}
 	}
 
 	private function create_external_table(&$ext_db) {

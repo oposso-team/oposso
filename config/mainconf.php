@@ -26,6 +26,7 @@ $CONF["email"]["From_name"] = "OPOSSO";
 $CONF["user"]["expire"] = 24; // Time (h) after the user will be deleted if not confirmed
 $CONF["notification"] = ["twoMonth" => "2 months", "twoWeeks" => "2 weeks"]; // Notification settings
 $CONF["tc_required"] = TRUE; // terms and conditions have to be accepted
+$CONF["pass_filter"] = "A-Za-z0-9\-\._~"; // regular expression for subscription password filtering
 
 $PATH_htpasswd = "HTPASSWD"; // absolute filepath to .htpasswd which contains username and password
 

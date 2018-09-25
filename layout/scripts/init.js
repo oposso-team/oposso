@@ -99,21 +99,54 @@ $(function () {
 			$($(this).attr("data-target")).dialog("open");
 		}
 	});
-
 	// Handle already existing forms; For dynamic forms loaded via ajax see function initEditDialog below
 	$("form.ajax").bind("submit", function (event) {
 		event.preventDefault();
-		var form = $(this);
-		var data = form.serialize();
-		$.ajax({
-			url: $(form).attr("action"),
-			type: "POST",
-			dataType: "json",
-			data: data,
-			beforeSend: function () {
+		$this = $(this);
+		if ($this.parent().is('#addkeys')) {
+			var action = $this.attr("action");
+			var formData = new FormData($this.get(0));
+			formData.delete('keys');
+			var keyData = $('#keys', this).val().split('\n');
+			var counter = 0;
+			var formArray = {};
+			for (var pair of formData.entries()) {
+				formArray[pair[0]] = pair[1];
+			}
+			if (keyData.length > 0) {
 				toggleLoading("body", true, "100%", "100%");
-			},
-			success: function (response) {
+			}
+			keyData.forEach(function (key, index) {
+				formArray['keys'] = key;
+				formArray['offset'] = index;
+				var data = $.param(formArray);
+				submitForm(action, data, function (response) {
+					counter++;
+					progressBar(counter, keyData.length);
+					if (counter >= keyData.length) {
+						toggleLoading("body", false);
+						if (response["value"]) {
+							$(".dialog").dialog("close");
+							if (response["message"]["type"] === "error" || response["message"]["type"] === "success")
+								message(response["message"]["text"]);
+							else if (response["message"]["type"] === "redirect") {
+								window.location.href = response["message"]["text"];
+							}
+						} else {
+							if (response["message"]["type"] === "error" || response["message"]["type"] === "success")
+								message(response["message"]["text"], $this);
+							else if (response["message"]["type"] === "log") {
+								console.log(response["message"]["text"]);
+							}
+						}
+					}
+				}, false);
+			});
+		} else {
+			var form2 = $(this);
+			var data = form2.serialize();
+
+			submitForm($(form2).attr("action"), data, function (response) {
 				toggleLoading("body", false);
 				if (response["value"]) {
 					$(".dialog").dialog("close");
@@ -124,25 +157,25 @@ $(function () {
 					}
 				} else {
 					if (response["message"]["type"] === "error" || response["message"]["type"] === "success")
-						message(response["message"]["text"], form);
+						message(response["message"]["text"], form2);
 					else if (response["message"]["type"] === "log") {
 						console.log(response["message"]["text"]);
 					}
 				}
-			}
-		});
+			}, true);
+		}
 	});
-
 	$("a.ajax, button.ajax").bind("click", function (event) {
 		event.preventDefault();
 		var data = {};
 		var href = $(this).is('a') ? $(this).attr("href") : $(this).attr("data-href");
+		var callback = window[$(this).attr("data-callback")];
 		data["source"] = $($(this).attr("data-source")).serialize();
 		data["action"] = $(this).attr("data-action");
 		if (typeof $(this).attr("title") !== "undefined") {
 			$($(this).attr("data-target")).dialog("option", "title", $(this).attr("title"));
 		}
-		initEditDialog($(this).attr("data-target"), href, data);
+		initEditDialog($(this).attr("data-target"), href, data, "html", callback);
 	});
 
 	$("#accordion").accordion({
@@ -158,6 +191,55 @@ $(function () {
 	$(".tabs").tabs();
 	init_button();
 });
+
+function submitForm(url, data, callback, loading) {
+	$.ajax({
+		url: url,
+		type: "POST",
+		dataType: "json",
+		data: data,
+		beforeSend: function () {
+			if (loading) {
+				toggleLoading("body", true, "100%", "100%");
+			}
+		},
+		success: callback
+	});
+}
+
+function subInfo() {
+	$(".dialog#extendsubs").each(function () {
+		$(".ui-dialog-buttonpane .dialog-sub-info", $(this).parent()).remove();
+		var count = $("select#source option", this).length;
+		$(".ui-dialog-buttonpane", $(this).parent()).prepend("<div class='dialog-sub-info'>" + count + " " + LOCAL["subscription"]["dialog"]["extend"]["selected_info"] + "</div>");
+	});
+}
+
+function progressBar(value, maxValue, forceClose) {
+	var progress = value * 100 / maxValue;
+	if ($('#progressbar').length < 1) {
+		var progressbar = $('<div id="progressbar"><div class="progress-label" style="position:absolute; width:100%; line-height:2em; font-weight:bold; text-align:center;"></div></div>').appendTo('body').css({
+			"position": "fixed",
+			"top": "0",
+			"width": "100%",
+			"z-index": 1000
+		});
+		$(progressbar).progressbar({
+			value: false
+		});
+		$('.ui-progressbar-value', progressbar).css({
+			"background": "#C90000"
+		});
+	}
+	if(progress > 50) {
+		$('#progressbar .progress-label').css("color", "#FFFFFF");
+	}
+	$('#progressbar .progress-label').text( value + " / " + maxValue);
+	$('#progressbar').progressbar("value", progress);
+	if (forceClose || value >= maxValue) {
+		$('#progressbar').remove();
+	}
+}
 
 function message(msg, append) {
 	console.log(msg);
@@ -177,7 +259,7 @@ function message(msg, append) {
 }
 
 // Handle dynamic forms loaded via ajax
-function initEditDialog(target, requestURL, data, type) {
+function initEditDialog(target, requestURL, data, type, callback) {
 	type = (typeof type === "undefined") ? "html" : type;
 	var form = $(target);
 	$.ajax({
@@ -203,7 +285,6 @@ function initEditDialog(target, requestURL, data, type) {
 					firstDay: 1
 				});
 				message($('<div>').append($(".message", target)).html(), target);
-
 				form = $("form", target);
 				$(form).bind("submit", function (event) {
 					event.preventDefault();
@@ -226,6 +307,9 @@ function initEditDialog(target, requestURL, data, type) {
 					}
 				}
 
+			}
+			if (typeof callback === "function") {
+				callback();
 			}
 		}
 	});

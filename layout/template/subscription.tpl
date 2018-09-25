@@ -7,10 +7,11 @@
 			<li><a href="#tabs-expired">{$LOCAL.subscription.head.expired_subscription}</a></li>
 			<button class="button_key btn-dialog" value="-1" title="{$LOCAL.subscription.button.set_global_password}" data-target="#setpass">{$LOCAL.subscription.button.set_global_password}</button>
 			<button class="button_add btn-dialog" type="button" data-target="#addkeys">{$LOCAL.subscription.button.add_subscription}</button>
-			<button class="button_add ajax" type="button" data-href="process/subscription.php" data-action="getform" data-source=".checksub" data-target="#extendsubs">{$LOCAL.subscription.button.extend_subscription}</button>
+			<button class="button_add ajax" type="button" data-href="process/subscription.php" data-action="getform" data-source=".checksub" data-callback="subInfo" data-target="#extendsubs">{$LOCAL.subscription.button.extend_subscription}</button>
 		</ul>
 		<div id="tabs-current">
 			{if !empty($currSub)}
+				{$currPagination}
 				<form method="post" action="process/subscription.php" class="ajax">
 					<input type="hidden" name="action" value="edit" />
 					<table class="list ui-widget ui-widget-content">
@@ -45,10 +46,12 @@
 						</tbody>
 					</table>
 				</form>
+				{$currPagination}
 			{/if}
 		</div>
 		<div id="tabs-expired">
 			{if !empty($expSub)}
+				{$expPagination}
 				<table class="list ui-widget ui-widget-content">
 					<thead>
 						<tr class="ui-widget-header">
@@ -73,6 +76,7 @@
 						{/foreach}
 					</tbody>
 				</table>
+				{$expPagination}
 			{/if}
 		</div>
 	</div>

@@ -12,6 +12,7 @@ class DBconn {
 	private $db, $result, $stmt;
 	private $params = array();
 	private $types = "";
+	public $num_rows;
 	public $error;
 
 	public function __construct($db_host = null, $db_user = null, $bd_pass = null, $db_name = null, $flag = null, $ca = null) {
@@ -19,7 +20,7 @@ class DBconn {
 		$db_user = empty($db_user) ? DB_user : $db_user;
 		$bd_pass = empty($bd_pass) ? DB_pass : $bd_pass;
 		$db_name = empty($db_name) ? DB_name : $db_name;
-		$this->db = new mysqli(); 
+		$this->db = new mysqli();
 		if (!empty($ca)) {
 			$this->db->ssl_set(NULL, NULL, $ca, NULL, NULL);
 		}
@@ -51,13 +52,17 @@ class DBconn {
 		$this->db->query("COMMIT");
 	}
 
-	public function query($sql) {
+	public function query($sql, $flush = TRUE) {
 		$this->stmt = $this->db->stmt_init();
 		if ($this->stmt->prepare($sql)) {
 			if (!empty($this->types)) {
 				call_user_func_array(array($this->stmt, 'bind_param'), array_merge(array($this->types), $this->params));
 			}
-			return $this->finalExecute();
+			if ($flush) {
+				return $this->finalExecute();
+			} else {
+				return $this->execute();
+			}
 		}
 		$this->exception($this->stmt->error);
 		return FALSE;
@@ -67,6 +72,7 @@ class DBconn {
 		$execute = $this->stmt->execute();
 		if (!$execute)
 			$this->exception($this->stmt->error);
+		$this->num_rows = $this->stmt->num_rows;
 		return $execute;
 	}
 
