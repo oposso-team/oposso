@@ -290,6 +290,8 @@ class Subscription {
 				if ($ext_db->query($sql) === FALSE) {
 					$this->exception($ext_db->error);
 					return FALSE;
+				} else {
+					$this->log("Failed to delete subscription #{$sID} from external user table, active subscribtion not found in local table (TYPE " . gettype($sub) . ")");
 				}
 			}
 		} else {
