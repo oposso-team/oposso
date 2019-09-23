@@ -13,7 +13,7 @@ $allUsers = $User->get_all_users(1);
 ?>
 
 <!-- User -->
-<? if (!empty($allUsers)) { ?>
+<?php if (!empty($allUsers)) { ?>
 	<table class="dataTable user table list ui-widget ui-widget-content">
 		<thead>
 			<tr>
@@ -26,7 +26,7 @@ $allUsers = $User->get_all_users(1);
 			</tr>
 		</thead>
 		<tbody>
-		<?
+		<?php
 		foreach ($allUsers as $user) {
 			$subscription = new Subscription($user["uID"]);
 			$allSub = $subscription->get_subscription();
@@ -47,7 +47,7 @@ $allUsers = $User->get_all_users(1);
 					</form>
 				</td>
 			</tr>
-		<? } ?>
+		<?php } ?>
 		</tbody>
 	</table>
 	<div id="delete-user-dialog" class="confirmation">
@@ -62,4 +62,4 @@ $allUsers = $User->get_all_users(1);
 	<div id="edit-user-dialog" class="dialog-edit large">
 		
 	</div>
-<? } ?>
+<?php } ?>

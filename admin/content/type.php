@@ -21,9 +21,9 @@ $typeList = $keyHandler->get_type();
 		<button class="button_add" type="submit" value="add">Add</button>
 	</form>
 	<br/>
-	<? if (!empty($typeList)) { ?>
+	<?php if (!empty($typeList)) { ?>
 		<table class="list ui-widget ui-widget-content">
-			<? foreach ($typeList as $type) { ?>
+			<?php foreach ($typeList as $type) { ?>
 			<tr>
 				<td>
 					<form method="post" action="process/type.php" class="ajax typeForm tr">
@@ -37,9 +37,9 @@ $typeList = $keyHandler->get_type();
 					</form>
 				</td>
 			</tr>
-			<? } ?>
+			<?php } ?>
 		</table>
-	<? } ?>
+	<?php } ?>
 
 	<div id="delete-key-dialog" class="confirmation" title="Are you sure you want to delete this type?">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>These type and all corresponding keys (if any) will be permanently deleted and cannot be recovered. Are you sure?</p>

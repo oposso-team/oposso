@@ -32,6 +32,6 @@ unset($_SESSION['ERROR'], $_SESSION['SUCCESS']);
 	<div id="error_box"><?= $msg_error ?></div>
 	<div id="success_box"><?= $msg_success ?></div>
 	<div id="tabs">
-		<? require_once('navigation.php'); ?>
+		<?php require_once('navigation.php'); ?>
 	</div>
 </html>

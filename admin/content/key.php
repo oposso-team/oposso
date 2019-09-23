@@ -19,9 +19,9 @@ $keySum = $keyHandler->get_key_summary();
 		<input type="hidden" name="action" value="add" />
 		<select name="type" class="select small">
 			<option value="0">++ Type ++</option>
-			<? foreach ($types as $type) { ?>
+			<?php foreach ($types as $type) { ?>
 				<option value="<?= $type["tID"] ?>"><?= $type["short"] ?></option>
-			<? } ?>
+			<?php } ?>
 		</select>
 		<div class="slider-container">
 			<label for="duration">Duration (months):</label>
@@ -43,7 +43,7 @@ $keySum = $keyHandler->get_key_summary();
 		</select>
 		<button class="button_add" type="submit">Generate</button>
 	</form>
-	<? if (!empty($keySum)) { ?>
+	<?php if (!empty($keySum)) { ?>
 		<h3>Summary</h3>
 		<table class="list ui-widget ui-widget-content">
 			<thead>
@@ -61,7 +61,7 @@ $keySum = $keyHandler->get_key_summary();
 			</tr>
 			</thead>
 			<tbody>
-				<?
+				<?php
 				foreach ($keySum as $keyS) {
 					$type = $keyHandler->get_type($keyS["tID"]);
 					?>
@@ -85,10 +85,10 @@ $keySum = $keyHandler->get_key_summary();
 							</form>
 						</td>
 					</tr>
-				<? } ?>
+				<?php } ?>
 			</tbody>
 		</table>
-	<? } ?>
+	<?php } ?>
 
 	<div id="keylist" class="dialog" title="Subscription Keys">
 	</div>
