@@ -25,7 +25,7 @@ if (is_array($allSub)) {
 <!-- Subscription Overview -->
 <div id="subscription">
 	<div class="accordion">
-		<? if (!empty($currSub)) { ?>
+		<?php if (!empty($currSub)) { ?>
 			<h3>Current subscriptions</h3> 
 			<div>
 				<table class="dataTable subscription table list ui-widget ui-widget-content">
@@ -43,7 +43,7 @@ if (is_array($allSub)) {
 						</tr>
 					</thead>
 					<tbody>
-						<? foreach ($currSub as $sub) { ?>
+						<?php foreach ($currSub as $sub) { ?>
 							<tr>
 								<td><?= $sub["sID"] ?></td>
 								<td class="key"><?= $sub["username"] ?></td>
@@ -51,24 +51,24 @@ if (is_array($allSub)) {
 								<td><?= $sub["organization"] ?></td>
 								<td><?= date("Y/m/d", strtotime($sub["create_time"])) ?></td>
 								<td><?= date("Y/m/d", strtotime($sub["exp_time"])) ?></td>
-								<? if ($sub["active"] === 1) { ?>
+								<?php if ($sub["active"] === 1) { ?>
 									<td class="td tooltip highlight-green" title="Active"><span class='ui-icon ui-icon-check'>Active</span></td>
-								<? } else { ?>
+								<?php } else { ?>
 									<td class="td tooltip highlight-red" title="Inactive"><span class='ui-icon ui-icon-cancel'>Inactive</span></td>
-								<? } ?>
+								<?php } ?>
 								<td><a class="ajax button_edit" href="process/subscription.php?rel=<?= $sub["sID"] ?>" data-target="#edit-subscription-dialog" title="Edit subscription #<?= $sub["sID"] ?>">Edit</a></span>
-									<? if (empty($sub["password"])) { ?>
+									<?php if (empty($sub["password"])) { ?>
 									<td class="td tooltip" title="Password not set yet"><span class='ui-icon ui-icon-alert' style='margin-right: .3em;'>Password not set yet</span></td>
-								<? } else { ?>
+								<?php } else { ?>
 									<td></td>
-								<? } ?>
+								<?php } ?>
 							</tr>
-						<? } ?>
+						<?php } ?>
 					</tbody>
 				</table>
 			</div>
-		<? } ?>
-		<? if (!empty($expSub)) { ?>
+		<?php } ?>
+		<?php if (!empty($expSub)) { ?>
 			<h3>Expired subscriptions</h3>
 			<div>
 				<table class="dataTable subscription table list ui-widget ui-widget-content">
@@ -86,7 +86,7 @@ if (is_array($allSub)) {
 						</tr>
 					</thead>
 					<tbody>
-						<? foreach ($expSub as $sub) { ?>
+						<?php foreach ($expSub as $sub) { ?>
 							<tr>
 								<td><?= $sub["sID"] ?></td>
 								<td class="key"><?= $sub["username"] ?></td>
@@ -94,23 +94,23 @@ if (is_array($allSub)) {
 								<td><?= $sub["organization"] ?></td>
 								<td><?= date("Y/m/d", strtotime($sub["create_time"])) ?></td>
 								<td><?= date("Y/m/d", strtotime($sub["exp_time"])) ?></td>
-								<? if ($sub["active"] === 1) { ?>
+								<?php if ($sub["active"] === 1) { ?>
 									<td class="td tooltip highlight-green" title="Active"><span class='ui-icon ui-icon-check'>Active</span></td>
-								<? } else { ?>
+								<?php } else { ?>
 									<td class="td tooltip highlight-red" title="Inactive"><span class='ui-icon ui-icon-cancel'>Inactive</span></td>
-								<? } ?>
+								<?php } ?>
 								<td><a class="ajax button_edit" href="process/subscription.php?rel=<?= $sub["sID"] ?>" data-target="#edit-subscription-dialog" title="Edit subscription #<?= $sub["sID"] ?>">Edit</a></span>
-								<? if (empty($sub["password"])) { ?>
+								<?php if (empty($sub["password"])) { ?>
 									<td class="td tooltip" title="Password not set yet"><span class='ui-icon ui-icon-alert' style='margin-right: .3em;'>Password not set yet</span></td>
-								<? } else { ?>
+								<?php } else { ?>
 									<td></td>
-								<? } ?>
+								<?php } ?>
 							</tr>
-						<? } ?>
+						<?php } ?>
 					</tbody>
 				</table>
 			</div>
-		<? } ?>
+		<?php } ?>
 	</div>
 	<div id="delete-subscription-dialog" class="confirmation">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The subsciption will be permanently deleted and cannot be recovered.<br/>Are you sure?</p>
