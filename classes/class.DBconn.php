@@ -15,8 +15,9 @@ class DBconn {
 	public $num_rows;
 	public $error;
 
-	public function __construct($db_host = null, $db_user = null, $bd_pass = null, $db_name = null, $flag = null, $ca = null) {
+	public function __construct($db_host = null, $db_user = null, $bd_pass = null, $db_name = null, $flag = null, $ca = null, $db_port = null) {
 		$db_host = empty($db_host) ? DB_host : $db_host;
+		$db_port = empty($db_port) ? DB_port : $db_port;
 		$db_user = empty($db_user) ? DB_user : $db_user;
 		$bd_pass = empty($bd_pass) ? DB_pass : $bd_pass;
 		$db_name = empty($db_name) ? DB_name : $db_name;
@@ -24,7 +25,7 @@ class DBconn {
 		if (!empty($ca)) {
 			$this->db->ssl_set(NULL, NULL, $ca, NULL, NULL);
 		}
-		if (!$this->db->real_connect($db_host, $db_user, $bd_pass, $db_name, 3306, null, $flag) || !$this->db->set_charset("utf8")) {
+		if (!$this->db->real_connect($db_host, $db_user, $bd_pass, $db_name, $db_port, null, $flag) || !$this->db->set_charset("utf8")) {
 			$this->exception($this->db->connect_error);
 			exit();
 		}

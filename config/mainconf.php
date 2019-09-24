@@ -4,13 +4,15 @@ if (!isset($_SESSION))
 	session_start();
 
 # Main database
-define("DB_host", "");
+define("DB_host", "localhost");
+define("DB_port", 3306);
 define("DB_name", "");
 define("DB_user", "");
 define("DB_pass", "");
 
 # external database on download server, required for authentication immediately after adding a new subscription.
 define("ext_DB_host", "");
+define("ext_DB_port", 3306);
 define("ext_DB_name", "");
 define("ext_DB_user", "");
 define("ext_DB_pass", "");
