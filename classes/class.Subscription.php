@@ -260,8 +260,13 @@ class Subscription {
 	private function sync_external_user_table($sID) {
 		if (sync_external_db) {
 			$sub = $this->get_active_subscriptions($sID);
-			$ext_db = new DBconn(ext_DB_host, ext_DB_user, ext_DB_pass, ext_DB_name, ext_DB_flag, ext_DB_ca, ext_DB_host);
-			$ext_sub = $this->get_external_user($ext_db, $sID);
+			try {
+				$ext_db = new DBconn(ext_DB_host, ext_DB_user, ext_DB_pass, ext_DB_name, ext_DB_flag, ext_DB_ca, ext_DB_host);
+				$ext_sub = $this->get_external_user($ext_db, $sID);
+			} catch (Exception $exc) {
+				$this->exception($exc->getTraceAsString());
+				return FALSE;
+			}
 			if (!empty($sub)) {
 				if (!empty($ext_sub)) {
 					$ext_db->addParams("s", $sub['password']);
