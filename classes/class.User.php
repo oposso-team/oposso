@@ -87,7 +87,7 @@ class User {
 	}
 
 	public function set_language($uID, $currentPassword, $lang) {
-		if (empty($lang)){
+		if (empty($lang)) {
 			$this->exception("Empty language String");
 			return FALSE;
 		}
@@ -153,7 +153,33 @@ class User {
 		$sql = "SELECT * FROM user";
 		if ($confirmed !== -1) {
 			$this->db->addParams("i", $confirmed);
-			$sql .= " WHERE confirmed = ? AND active = 1";
+			$sql .= " WHERE confirmed = ? AND active = 1 ORDER BY uID desc";
+		}
+		if ($this->db->query($sql) === FALSE) {
+			$this->exception($this->db->error);
+			return FALSE;
+		} else {
+			return $this->db->fetch_all_array();
+		}
+	}
+
+	public function search_user($needle) {
+		$sql = "SELECT * FROM user WHERE confirmed = 1 AND active = 1 AND (";
+		if (!empty($needle)) {
+			if (is_numeric($needle)) {
+				$this->db->addParams("i", $needle);
+				$sql .= "uID = ?";
+			} else {
+				$needle = "%" . $needle . "%";
+				$this->db->addParams("s", $needle);
+				$this->db->addParams("s", $needle);
+				$this->db->addParams("s", $needle);
+				$this->db->addParams("s", $needle);
+				$sql .= "firstname LIKE ? OR lastname LIKE ? OR organization LIKE ? OR email LIKE ?";
+			}
+			$sql .= ") ORDER BY uID desc";
+		} else {
+			return $this->get_all_users(1);
 		}
 		if ($this->db->query($sql) === FALSE) {
 			$this->exception($this->db->error);
