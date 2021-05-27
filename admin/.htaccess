@@ -1,3 +1,5 @@
+AddHandler application/x-httpd-php .phpsh
+
 AuthType Basic
 AuthName "OPOSSO Backend" 
 AuthUserFile  /etc/oposso/htpasswd.backend
