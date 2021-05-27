@@ -1,7 +1,7 @@
 {
     "require": {
         "katzgrau/klogger": "~1.2",
-		"phpmailer/phpmailer": "~5.2",
+		"phpmailer/phpmailer": "~6.1",
 		"smarty/smarty": "~3.1",
 		"oyejorge/less.php": "~1.7.0.10"
     }
