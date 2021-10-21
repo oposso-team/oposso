@@ -9,6 +9,7 @@ require_once("./process/script_access.php");
 require_once($PATH_classes . "/vendor/autoload.php");
 require_once($PATH_classes . "/class.KeyHandler.php");
 require_once($PATH_classes . "/class.Customize.php");
+require_once($PATH_classes . "/class.Helper.php");
 require_once($PATH_l10n . "/locallang.php");
 
 $msg_error = isset($_SESSION['ERROR']) ? $_SESSION['ERROR'] : "";
@@ -17,12 +18,14 @@ unset($_SESSION['ERROR'], $_SESSION['SUCCESS']);
 
 $Customize = new Customize();
 $productname = $Customize->get_settings('product_name');
+$token = Helper::createToken();
 
 $smarty = new Smarty;
 $smarty->assign("msg_error", $msg_error);
 $smarty->assign("msg_success", $msg_success);
 $smarty->assign("LOCAL", $LOCAL);
 $smarty->assign("product_name", $productname);
+$smarty->assign("token", $token);
 if (!empty($_SESSION))
 	$smarty->assign("SESSION", $_SESSION);
 if (!empty($_COOKIE))

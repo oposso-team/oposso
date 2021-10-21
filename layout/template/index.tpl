@@ -47,6 +47,7 @@
 		<div class="grid50 register">
 			<form method="post" action="process/user_register.php" class="ajax">
 				<input type="hidden" name="action" value="register" />
+				<input type="hidden" name="token" value="{$token}" />
 				<table class="ui-widget ui-widget-content table-form">
 					<thead>
 						<tr>
@@ -81,6 +82,12 @@
 						<tr>
 							<td colspan="2">{$LOCAL.home.register.text.0} <a class="link" href="user_agreement.php" target="_blank">{$LOCAL.home.register.text.1}</a> {$LOCAL.home.register.text.2} <a class="link" href="privacy_policy.php" target="_blank">{$LOCAL.home.register.text.3}</a></td>
 						</tr>
+						<tr>
+							<td colspan="2"><label for="captcha">{$LOCAL.home.register.captcha}*</label></td>
+						</tr>
+						<tr>
+							<td><img class="captcha-img" src="/process/captcha.php?{$token}" /></td>
+							<td><input type="text" name="captcha" id="captcha" placeholder="Captcha" value="" class="text ui-widget-content ui-corner-all"/></td>
 						</tr>
 					</tbody>
 					<tfoot>

@@ -35,6 +35,18 @@ if (empty($_POST["password"])) {
 	echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["invalid_password_confirm"]);
 	exit();
 }
+if (empty($_POST["token"]) || !Helper::compareToken($_POST["token"])) {
+	echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["session_expired"]);
+	exit();
+}
+if (empty($_POST["captcha"])) {
+	echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["captcha_empty"]);
+	exit();
+}
+if (!Helper::compareCaptcha($_POST["captcha"])) {
+	echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["captcha_mismatch"], "reloadCaptcha");
+	exit();
+}
 
 $organization = isset($_POST["organization"]) ? $_POST["organization"] : "";
 $firstname = isset($_POST["firstname"]) ? $_POST["firstname"] : "";
@@ -60,4 +72,3 @@ if ((!empty($_COOKIE['ln']) && $user->add_user($firstname, $lastname, $organizat
 }
 
 exit();
-?>

@@ -162,8 +162,14 @@ $(function () {
 						console.log(response["message"]["text"]);
 					}
 				}
+				if (response["command"] !== "") {
+					execCommand(response["command"]);
+				}
 			}, true);
 		}
+	});
+	$('img.captcha-img').bind("click", function (event) {
+		reloadCaptcha(this);
 	});
 	$("a.ajax, button.ajax").bind("click", function (event) {
 		event.preventDefault();
@@ -342,4 +348,22 @@ function setNavigation() {
 			$(this).addClass('active');
 		}
 	});
+}
+
+function execCommand (command) {
+	switch (command) {
+		case "reloadCaptcha":
+			reloadCaptcha($('img.captcha-img'));
+			break;
+
+		default:
+			return false;
+			break;
+	}
+	return true;
+}
+
+function reloadCaptcha(img) {
+	randomNumer = Math.ceil(Math.random()*1000000);
+	$(img).attr('src', '/process/captcha.php?' + randomNumer);
 }

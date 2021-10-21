@@ -36,7 +36,7 @@ class Helper {
 	 * @param string $msgText
 	 * @return json
 	 */
-	public static function jsonResponse($value, $msgType = "", $msgText = "") {
+	public static function jsonResponse($value, $msgType = "", $msgText = "", $command = "") {
 		switch ($msgType) {
 			case "error":
 				$msgText = self::boxError($msgText);
@@ -50,15 +50,16 @@ class Helper {
 			"message" => array(
 				"type" => $msgType,
 				"text" => $msgText
-			)
+			),
+			"command" => $command,
+			
 		));
-		
 	}
 
 	public static function validate_Email($email) {
 		return filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
-	
+
 	/**
 	 * Replace each value of marker array with the corresponding content value on template string
 	 * @param array $marker
@@ -68,17 +69,50 @@ class Helper {
 	 */
 	public static function setMarker($marker, $content, $template) {
 		for ($i = 0; $i < count($marker); $i++) {
-			$m = "###".strtoupper($marker[$i])."###";
+			$m = "###" . strtoupper($marker[$i]) . "###";
 			$c = $content[$i];
 			$template = str_replace($m, $c, $template);
 		}
 		return $template;
 	}
-	
-	public static function debug_console () {
+
+	public static function createToken() {
+		$token = bin2hex(openssl_random_pseudo_bytes(16));
+		$_SESSION['token'] = $token;
+
+		return $token;
+	}
+
+	public static function compareToken($token) {
+		if (!empty($_SESSION['token'])) {
+			return ($token === $_SESSION['token']);
+		} else {
+			return false;
+		}
+	}
+
+	public static function createCaptchaString($length = 6) {
+		$signs = 'aAbBcCdDeEfFgGhHjJkKLmMnNpPqQrRsStTuUvVwWxXyYzZ23456789';
+		$string = '';
+		for ($i = 1; $i <= $length; $i++) {
+			$sign = $signs{rand(0, strlen($signs) - 1)};
+			$string .= $sign;	
+		}
+		$_SESSION['captcha'] = $string;
+
+		return $string;
+	}
+
+	public static function compareCaptcha($captcha) {
+		if (!empty($_SESSION['captcha'])) {
+			return ($captcha === $_SESSION['captcha']);
+		} else {
+			return false;
+		}
+	}
+
+	public static function debug_console() {
 		
 	}
 
 }
-
-?>
