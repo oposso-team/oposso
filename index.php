@@ -26,10 +26,13 @@ $smarty->assign("msg_success", $msg_success);
 $smarty->assign("LOCAL", $LOCAL);
 $smarty->assign("product_name", $productname);
 $smarty->assign("token", $token);
-if (!empty($_SESSION))
+if (!empty($_SESSION)) {
 	$smarty->assign("SESSION", $_SESSION);
-if (!empty($_COOKIE))
-	$smarty->assign("COOKIE", $_COOKIE);
-if (!empty($_GET["redirect"]))
-	$smarty->assign("redirect", $_GET["redirect"]);
+}
+if (!empty($_COOKIE)) {
+	$smarty->assign("COOKIE", $_COOKIE); 
+}
+if (!empty($_GET["redirect"])) {
+	$smarty->assign("redirect", htmlspecialchars($_GET["redirect"], ENT_QUOTES));
+}
 $smarty->display('layout/template/index.tpl');

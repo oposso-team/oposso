@@ -15,8 +15,8 @@ require_once($PATH_classes . '/class.Pagination.php');
 require_once($PATH_l10n . "/locallang.php");
 
 $subscription = new Subscription($_SESSION["user"]["uID"]);
-$limit = !empty($_GET['limit']) ? $_GET['limit'] : 500;
-$page = !empty($_GET['page']) ? $_GET['page'] : 1;
+$limit = !empty($_GET['limit']) ? intval($_GET['limit']) : 500;
+$page = !empty($_GET['page']) ? intval($_GET['page']) : 1;
 $allSub = $subscription->get_subscription("");
 
 $smarty = new Smarty;

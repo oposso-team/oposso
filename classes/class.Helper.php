@@ -52,7 +52,6 @@ class Helper {
 				"text" => $msgText
 			),
 			"command" => $command,
-			
 		));
 	}
 
@@ -96,7 +95,7 @@ class Helper {
 		$string = '';
 		for ($i = 1; $i <= $length; $i++) {
 			$sign = $signs{rand(0, strlen($signs) - 1)};
-			$string .= $sign;	
+			$string .= $sign;
 		}
 		$_SESSION['captcha'] = $string;
 
@@ -109,6 +108,15 @@ class Helper {
 		} else {
 			return false;
 		}
+	}
+
+	public static function arrayContains($str, array $arr) {
+		foreach ($arr as $a) {
+			if (stripos($str, $a) !== false) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static function debug_console() {

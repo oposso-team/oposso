@@ -15,9 +15,15 @@ if (empty($_SESSION['script_access']) || empty($_POST["action"])) {
 	exit();
 }
 
+$forbiddenText = ["http:", "https:", "://"];
+
 $user = new User();
 if (empty($_POST["email"]) || !Helper::validate_Email($_POST["email"])) {
 	echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["invalid_email"]);
+	exit();
+}
+if (Helper::arrayContains($_POST["firstname"], $forbiddenText) || Helper::arrayContains($_POST["lastname"], $forbiddenText) || Helper::arrayContains($_POST["organization"], $forbiddenText)) {
+	echo Helper::jsonResponse(FALSE, "error", $LOCAL["msg"]["error"]["forbidden_string"]);
 	exit();
 }
 if (!$user->check_email($_POST["email"])) {

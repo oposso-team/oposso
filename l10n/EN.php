@@ -329,6 +329,7 @@ $LOCAL["msg"]["error"]["update_description"] = "<b>Description for ID ###ID### c
 $LOCAL["msg"]["error"]["session_expired"] = "Your session has expired! Please reload the page and try again";
 $LOCAL["msg"]["error"]["captcha_empty"] = "Captcha must not be empty";
 $LOCAL["msg"]["error"]["captcha_mismatch"] = "Sorry, the captcha field does not match the image, please try again";
+$LOCAL["msg"]["error"]["forbidden_string"] = "One or more fields contain forbidden strings";
 $LOCAL["msg"]["success"]["user_register"] = "Email sent to '###EMAIL###'.<br/>Please check your mailbox to complete the registration.";
 $LOCAL["msg"]["success"]["new_password"] = "A new password has been sent to your email address.";
 $LOCAL["msg"]["success"]["user_updated"] = "User '###EMAIL###' successfully updated.";
@@ -338,4 +339,3 @@ $LOCAL["msg"]["success"]["add_key"] = "###KEYS### keys successfully added.";
 $LOCAL["msg"]["success"]["extend_duration"] = "###KEYS### subscriptions successfully extended.";
 $LOCAL["msg"]["success"]["subscription_password_set"] = "Password successfully set for subscription ####ID###.";
 $LOCAL["msg"]["success"]["update_description"] = "Description successfully updated.";
-?>
