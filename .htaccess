@@ -1,4 +1,4 @@
-<IfModule php5_module>
+<IfModule php7_module>
 	php_flag display_errors Off
     php_flag session.cookie_httponly on
 </IfModule>

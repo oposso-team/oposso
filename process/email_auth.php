@@ -10,16 +10,16 @@ require_once($PATH_classes . "/class.Helper.php");
 require_once($PATH_classes . '/class.User.php');
 require_once($PATH_l10n . "/locallang.php");
 
-if (empty($_GET["hash"]) || empty($_GET["uID"])) {
+if (empty($_GET["hash"]) && empty($_GET["t"])) {
 	header('Location: ' . $URL_home);
 	exit();
 }
 
 $uID = $_GET["uID"];
-$hash = $_GET["hash"];
+$hash = !empty($_GET["t"]) ? $_GET["t"] : $_GET["hash"];
 $user = new User();
 
-if ($user->auth_user_email($uID, $hash)) {
+if ($user->auth_user_email($hash)) {
 	$_SESSION["login"] = (bool) $user->user['confirmed'];
 	$_SESSION["user"] = $user->user;
 	$_SESSION['SUCCESS'] = Helper::boxHighlight($LOCAL["msg"]["success"]["email_auth"]);
@@ -29,4 +29,3 @@ if ($user->auth_user_email($uID, $hash)) {
 
 header('Location: ' . $URL_home);
 exit();
-?>

@@ -65,7 +65,7 @@ unset($_POST["password"], $_POST["password_confirm"]);
 if ((!empty($_COOKIE['ln']) && $user->add_user($firstname, $lastname, $organization, $email, $password, $_COOKIE['ln'])) || $user->add_user($firstname, $lastname, $organization, $email, $password)) {
 	$_SESSION["login"] = (bool) $user->user['confirmed'];
 	$_SESSION["user"] = $user->user;
-	$regURL = "{$URL_root}/process/email_auth.php?uID={$user->uID}&hash={$user->user['hash']}";
+	$regURL = "{$URL_root}/process/email_auth.php?t={$user->user['hash']}";
 	$emailText = Helper::setMarker(array("firstname", "lastname", "url"), array($firstname, $lastname, $regURL), $LOCAL["email"]["confirm_registration"]["body"]);
 	if ($user->send_mail($emailText, $LOCAL["email"]["confirm_registration"]["subject"], $CONF["email"])) {
 		$_SESSION['SUCCESS'] = Helper::boxHighlight(Helper::setMarker(array("email"), array($email), $LOCAL["msg"]["success"]["user_register"]));

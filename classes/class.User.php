@@ -46,7 +46,7 @@ class User {
 
 	public function add_user($firstname, $lastname, $organization, $email, $password, $lang = "EN") {
 		$password = crypt($password, '$2y$10$' . PasswordGenerator::getAlphaNumericPassword(22));
-		$hash = PasswordGenerator::getAlphaNumericPassword(50);
+		$hash = PasswordGenerator::getAlphaNumericPassword(128);
 
 		$this->db->setParams("sssssss", array(&$firstname, &$lastname, &$organization, &$email, &$password, &$lang, &$hash));
 		$sql = "INSERT INTO user (firstname, lastname, organization, email, password, lang, hash) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -163,16 +163,15 @@ class User {
 		}
 	}
 
-	public function auth_user_email($uID, $hash) {
-		$this->db->addParams("i", $uID);
+	public function auth_user_email($hash) {
 		$this->db->addParams("s", $hash);
-		$sql = "UPDATE user SET confirmed = 1 WHERE uID = ? AND hash = ?";
-		if ($this->db->query($sql) === FALSE) {
+		$sql = "UPDATE user SET confirmed = 1 WHERE hash = ?";
+		if ($this->db->query($sql) === FALSE || $this->db->affected_rows < 1) {
 			$this->exception($this->db->error);
 			return FALSE;
 		}
-		$this->map_user($uID);
-		$this->log("User #{$uID} email confirmed");
+		$this->map_user("", "", false, $hash);
+		$this->log("User #{$this->user["uID"]} email confirmed");
 		return TRUE;
 	}
 
@@ -235,9 +234,10 @@ class User {
 	 * @param int $uID
 	 * @param string $email
 	 * @param boolean $confirmed
+	 * @param string $hash
 	 * @return boolean
 	 */
-	public function map_user($uID = "", $email = "", $confirmed = FALSE) {
+	public function map_user($uID = "", $email = "", $confirmed = FALSE, $hash = "") {
 		$sql = "SELECT * FROM user";
 		$col = array();
 		if (!empty($uID)) {
@@ -250,6 +250,10 @@ class User {
 		}
 		if ($confirmed) {
 			$col[] = "confirmed = 1";
+		}
+		if (!empty($hash)) {
+			$this->db->addParams("s", $hash);
+			$col[] = "hash = ?";
 		}
 		$col[] = "active = 1";
 		$sql = $sql . " WHERE " . implode(" AND ", $col);

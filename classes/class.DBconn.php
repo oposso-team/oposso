@@ -12,7 +12,7 @@ class DBconn {
 	private $db, $result, $stmt;
 	private $params = array();
 	private $types = "";
-	public $num_rows;
+	public $affected_rows;
 	public $error;
 
 	public function __construct($db_host = null, $db_user = null, $bd_pass = null, $db_name = null, $flag = null, $ca = null, $db_port = null) {
@@ -73,7 +73,7 @@ class DBconn {
 		$execute = $this->stmt->execute();
 		if (!$execute)
 			$this->exception($this->stmt->error);
-		$this->num_rows = $this->stmt->num_rows;
+		$this->affected_rows = $this->stmt->affected_rows;
 		return $execute;
 	}
 
@@ -144,5 +144,3 @@ class DBconn {
 	}
 
 }
-
-?>
